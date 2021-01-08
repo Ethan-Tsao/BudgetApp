@@ -11,7 +11,7 @@ def init_db():
 
 def init_budget():
     '''
-    initialize new table to produce the budget if non-existant
+    initialize new table to produce the projected budget if non-existant
     - parameters should include monthly or yearly budget
     - if monthly budget, interpolate into yearly budget
     '''
@@ -32,8 +32,19 @@ def log():
     '''
     add an entry to a earnings/expenses table
     '''
-    passasdfasdf;jk
-    
+
+def compare():
+    '''
+    compare current budget trajectory to projected budget
+    - provide percent difference i.e. current budget/projected budget * 100
+    '''
+
+def project_budget():
+    '''
+    given current spending and earning, project new budget to meet original budget
+    - take remaining budget space and normalize over time remaining
+    '''
+
 
 
 if __name__ == "__main__":
