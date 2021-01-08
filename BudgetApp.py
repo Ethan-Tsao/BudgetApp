@@ -6,10 +6,8 @@ class Budget():
     def __init__(self, income_yr):
         self.income_yr = income_yr
         self.income_mo = self.income_yr/12
-        # self.categories = [kind, amount, category, note, date]
         self.init_budget()
-        self.init_expenses()
-        pass            
+        self.init_expenses()           
 
     def init_budget(self):
         '''
@@ -19,11 +17,15 @@ class Budget():
         '''
         conn = sqlite3.connect('budgetapp.db')
         c = conn.cursor()
-        c.execute('''CREATE TABLE budget(
+        c.execute('''CREATE TABLE IF NOT EXISTS budget(
                     kind TINYTEXT, 
                     amount INT, 
                     category TINYTEXT)''')
-        pass
+
+        first_budget = ('kind', self.income_yr, 'total')
+        c.execute('''INSERT INTO budget 
+            VALUES (?,?,?)''', first_budget)
+        conn.close()
 
     def init_expenses(self):
         '''
@@ -32,15 +34,15 @@ class Budget():
         '''
         conn = sqlite3.connect('budgetapp.db')
         c = conn.cursor()
-        c.execute('''CREATE TABLE expenses (
+        c.execute('''CREATE TABLE IF NOT EXISTS expenses (
                     kind TINYTEXT,
-                    amount FLOAT(,2),
+                    amount FLOAT(10,2),
                     category TINYTEXT, 
                     note TEXT, 
                     date DATE)''')
-        pass
+        conn.close()
 
-    def log(self, kind, amount, category, note, date):
+    def log(self, kind, amount, category, date, note=''):
         '''
         add an entry to a earnings/expenses table
         - only allows for one entry at a time
@@ -49,7 +51,17 @@ class Budget():
         c = conn.cursor()
         c.execute('''INSERT INTO expenses
                     VALUES (?,?,?,?,?)''', (kind, amount, category, note, date))
-        pass
+        conn.commit()
+        conn.close()
+
+    # def view_expense(self):
+    #     '''
+    #     view expense table
+    #     '''
+    #     conn = sqlite3.connect('budgetapp.db')
+    #     c = conn.cursor()
+    #     for row in c.execute('SELECT * FROM expenses'):
+    #         print(row)
 
     def add_category(self, category):
         '''
@@ -76,4 +88,12 @@ class Budget():
 
 
 if __name__ == "__main__":
-    pass
+    new_budget = Budget(83000)
+    print('hello')
+
+    conn = sqlite3.connect('budgetapp.db')
+    c = conn.cursor()
+    c.execute('SELECT * FROM expenses')
+    for row in c.fetchall():
+        print(row)
+    conn.close()
