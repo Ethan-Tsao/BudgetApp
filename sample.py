@@ -32,9 +32,8 @@ def log():
     '''
     add an entry to a earnings/expenses table
     '''
-    pass
-
-
+    passasdfasdf;jk
+    
 
 
 if __name__ == "__main__":
